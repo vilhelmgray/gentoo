@@ -29,12 +29,14 @@ SET(WEBSITE "http://cxong.github.io/cdogs-sdl/")
 option(DEBUG "Enable debug build" OFF)
 option(DEBUG_PROFILE "Enable debug profile build" OFF)
 option(USE_SHARED_ENET "Use system installed copy of enet" OFF)
+option(BUILD_EDITOR "Build cdogs-sdl-editor" ON)
 
 # check for crosscompiling (defined when using a toolchain file)
 if(CMAKE_CROSSCOMPILING)
 	# check for gcw0
 	if(CMAKE_C_COMPILER MATCHES ".*gcw0-linux.*")
 		set(GCW0 1)
+		set(BUILD_EDITOR OFF)
 	endif()
 endif()
 
@@ -165,7 +167,7 @@ set_target_properties(cdogs-sdl PROPERTIES
 	RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_BINARY_DIR}/src
 	RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR}/src
 )
-if(NOT "${GCW0}")
+if(BUILD_EDITOR)
 	set_target_properties(cdogs-sdl-editor PROPERTIES
 		RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_BINARY_DIR}/src
 		RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR}/src
@@ -200,7 +202,7 @@ install(
   PROGRAMS
     ${CMAKE_CURRENT_BINARY_DIR}/src/cdogs-sdl${EXE_EXTENSION}
     DESTINATION ${CDOGS_BIN_DIR})
-if(NOT "${GCW0}")
+if(BUILD_EDITOR)
 	install(
 	  PROGRAMS
 	    ${CMAKE_CURRENT_BINARY_DIR}/src/cdogs-sdl-editor${EXE_EXTENSION}
